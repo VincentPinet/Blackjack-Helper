@@ -1,0 +1,122 @@
+@font-face {
+	src: url('fonts/RobotoMono-Medium.ttf');
+}
+
+@font-face {
+	src: url('fonts/Roboto-Black.ttf');
+}
+
+@font-face {
+	src: url('fonts/DigitalDisplay.ttf');
+}
+
+.root {
+	-fx-background-color : rgba(240, 240, 240, 1);
+}
+
+.circle {
+	-fx-fill: rgba(255, 255, 255, 1);
+	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 10, 0, 0, 4);
+}
+
+.button-big {
+	-fx-background-color: rgba(240, 240, 240, 1);
+	-fx-background-radius: 50%;
+	-fx-padding: 16;
+}
+
+.button-big:hover {
+	-fx-background-color: rgba(255, 255, 255, 1);
+}
+
+.button-big:armed {
+	-fx-background-color: rgba(225, 225, 225, 1);
+	-fx-background-insets: 2;
+}
+
+.button-small {
+	-fx-opacity : 0;
+	-fx-background-color: transparent;
+	-fx-background-radius: 50%;
+	-fx-padding: 0;
+}
+
+.button-small:hover {
+	-fx-opacity : 0.7;
+}
+
+.button-small:armed {
+	-fx-opacity : 1;
+}
+
+.dropzone {
+	-fx-border-color: rgba(33, 33, 33, 1);
+	-fx-border-width: 2;
+	-fx-border-radius: 60;
+}
+
+.card-passive {
+	-fx-fill : rgba(240, 240, 240, 1);
+	-fx-stroke: rgba(33, 33, 33, 1);
+	-fx-stroke-type: inside;
+	-fx-stroke-width: 2;
+	-fx-arc-height : 12;
+	-fx-arc-width : 12;
+	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 10, 0, 0, 2);
+}
+
+.card {
+	-fx-fill : rgba(240, 240, 240, 1);
+	-fx-stroke: rgba(33, 33, 33, 1);
+	-fx-stroke-type: inside;
+	-fx-stroke-width: 2;
+	-fx-arc-height : 12;
+	-fx-arc-width : 12;
+	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 10, 0, 0, 2);
+}
+
+.card:hover {
+	-fx-fill : rgba(255, 255, 255, 1);
+	-fx-stroke: rgba(0, 0, 0, 1);
+	-fx-cursor: open_hand;
+	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 10, 0, 0, 6);
+}
+
+.card:armed {
+	-fx-fill : rgba(225, 225, 225, 1);
+	-fx-stroke-width: 2;
+	-fx-cursor: closed_hand;
+}
+
+.deck {
+	-fx-background-color: rgba(240, 240, 240, 1);
+}
+
+.console {
+	-fx-background-color: rgba(33, 33, 33, 1);
+	-fx-border-color: rgba(240, 240, 240, 1);
+	-fx-border-style: hidden hidden hidden solid;
+	-fx-border-width: 2;
+}
+
+.console Text {
+	-fx-fill: rgba(240, 240, 240, 1);
+	-fx-font-family: 'Roboto Mono Medium';
+	-fx-font-size: 20.0px;
+}
+
+.counter {
+	-fx-background-color: rgba(33, 33, 33, 1);
+}
+
+.counter Text {
+	-fx-fill: rgba(240, 240, 240, 1);
+	-fx-font-family: 'Digital Display';
+	-fx-font-size: 24.0px;
+}
+
+.char {
+	-fx-fill: rgba(33, 33, 33, 1);
+	-fx-font-family: 'Roboto Black';
+	-fx-font-size: 32.0px;
+}

@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Ellipse?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+<?import java.util.ArrayList?>
+
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1280.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.vincentpinet.blackjack_helper.Controller">
+	<children>
+		<Ellipse layoutX="515.0" layoutY="-51.0" radiusX="663.0" radiusY="602.0" styleClass="circle" />
+		<HBox spacing="4.0" styleClass="deck" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
+			<padding>
+				<Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+			</padding>
+			<children>
+				<StackPane alignment="TOP_LEFT">
+					<children>
+						<Rectangle fx:id="card2" height="136.0" styleClass="card" width="97.0" />
+						<Text disable="true" styleClass="char" text="2">
+							<StackPane.margin>
+								<Insets left="4.0" top="4.0" />
+							</StackPane.margin>
+						</Text>
+					</children>
+				</StackPane>
+				<StackPane alignment="TOP_LEFT" layoutX="22.0" layoutY="22.0">
+					<children>
+						<Rectangle fx:id="card3" height="136.0" styleClass="card" width="97.0" />
+						<Text disable="true" styleClass="char" text="3">
+							<StackPane.margin>
+								<Insets left="4.0" top="4.0" />
+							</StackPane.margin>
+						</Text>
+					</children>
+				</StackPane>
+				<StackPane alignment="TOP_LEFT" layoutX="22.0" layoutY="22.0">
+					<children>
+						<Rectangle fx:id="card4" height="136.0" styleClass="card" width="97.0" />
+						<Text disable="true" styleClass="char" text="4">
+							<StackPane.margin>
+								<Insets left="4.0" top="4.0" />
+							</StackPane.margin>
+						</Text>
+					</children>
+				</StackPane>
+				<StackPane alignment="TOP_LEFT" layoutX="123.0" layoutY="22.0">
+					<children>
+						<Rectangle fx:id="card5" height="136.0" styleClass="card" width="97.0" />
+						<Text disable="true" styleClass="char" text="5">
+							<StackPane.margin>
+								<Insets left="4.0" top="4.0" />
+							</StackPane.margin>
+						</Text>
+					</children>
+				</StackPane>
+				<StackPane alignment="TOP_LEFT" layoutX="22.0" layoutY="22.0">
+					<children>
+						<Rectangle fx:id="card6" height="136.0" styleClass="card" width="97.0" />
+						<Text disable="true" styleClass="char" text="6">
+							<StackPane.margin>
+								<Insets left="4.0" top="4.0" />
+							</StackPane.margin>
+						</Text>
+					</children>
+				</StackPane>
+				<StackPane alignment="TOP_LEFT" layoutX="123.0" layoutY="22.0">
+					<children>
+						<Rectangle fx:id="card7" height="136.0" styleClass="card" width="97.0" />
+						<Text disable="true" styleClass="char" text="7">
+							<StackPane.margin>
+								<Insets left="4.0" top="4.0" />
+							</StackPane.margin>
+						</Text>
+					</children>
+				</StackPane>
+				<StackPane alignment="TOP_LEFT" layoutX="224.0" layoutY="22.0">
+					<children>
+						<Rectangle fx:id="card8" height="136.0" styleClass="card" width="97.0" />
+						<Text disable="true" styleClass="char" text="8">
+							<StackPane.margin>
+								<Insets left="4.0" top="4.0" />
+							</StackPane.margin>
+						</Text>
+					</children>
+				</StackPane>
+				<StackPane alignment="TOP_LEFT" layoutX="325.0" layoutY="22.0">
+					<children>
+						<Rectangle fx:id="card9" height="136.0" styleClass="card" width="97.0" />
+						<Text disable="true" styleClass="char" text="9">
+							<StackPane.margin>
+								<Insets left="4.0" top="4.0" />
+							</StackPane.margin>
+						</Text>
+					</children>
+				</StackPane>
+				<StackPane alignment="TOP_LEFT" layoutX="628.0" layoutY="22.0">
+					<children>
+						<Rectangle fx:id="card10" height="136.0" styleClass="card" width="97.0" />
+						<Text disable="true" styleClass="char" text="T">
+							<StackPane.margin>
+								<Insets left="4.0" top="4.0" />
+							</StackPane.margin>
+						</Text>
+					</children>
+				</StackPane>
+				<StackPane alignment="TOP_LEFT" layoutX="729.0" layoutY="22.0">
+					<children>
+						<Rectangle fx:id="card1" height="136.0" styleClass="card" width="97.0" />
+						<Text disable="true" styleClass="char" text="A">
+							<StackPane.margin>
+								<Insets left="4.0" top="4.0" />
+							</StackPane.margin>
+						</Text>
+					</children>
+				</StackPane>
+			</children>
+		</HBox>
+		<HBox alignment="CENTER_LEFT" layoutY="590.0" prefHeight="24.0" spacing="4.0" AnchorPane.leftAnchor="0.0">
+			<children>
+				<HBox alignment="CENTER_RIGHT" prefWidth="41.0" styleClass="counter">
+					<children>
+						<Text fx:id="counter2" text="32" />
+					</children>
+					<HBox.margin>
+						<Insets left="28.0" right="28.0" />
+					</HBox.margin>
+					<padding>
+						<Insets right="4.0" />
+					</padding>
+				</HBox>
+				<HBox alignment="CENTER_RIGHT" prefWidth="41.0" styleClass="counter">
+					<children>
+						<Text fx:id="counter3" text="32" />
+					</children>
+					<HBox.margin>
+						<Insets left="28.0" right="28.0" />
+					</HBox.margin>
+					<padding>
+						<Insets right="4.0" />
+					</padding>
+				</HBox>
+				<HBox alignment="CENTER_RIGHT" prefWidth="41.0" styleClass="counter">
+					<children>
+						<Text fx:id="counter4" text="32" />
+					</children>
+					<HBox.margin>
+						<Insets left="28.0" right="28.0" />
+					</HBox.margin>
+					<padding>
+						<Insets right="4.0" />
+					</padding>
+				</HBox>
+				<HBox alignment="CENTER_RIGHT" prefWidth="41.0" styleClass="counter">
+					<children>
+						<Text fx:id="counter5" text="32" />
+					</children>
+					<HBox.margin>
+						<Insets left="28.0" right="28.0" />
+					</HBox.margin>
+					<padding>
+						<Insets right="4.0" />
+					</padding>
+				</HBox>
+				<HBox alignment="CENTER_RIGHT" prefWidth="41.0" styleClass="counter">
+					<children>
+						<Text fx:id="counter6" text="32" />
+					</children>
+					<HBox.margin>
+						<Insets left="28.0" right="28.0" />
+					</HBox.margin>
+					<padding>
+						<Insets right="4.0" />
+					</padding>
+				</HBox>
+				<HBox alignment="CENTER_RIGHT" prefWidth="41.0" styleClass="counter">
+					<children>
+						<Text fx:id="counter7" text="32" />
+					</children>
+					<HBox.margin>
+						<Insets left="28.0" right="28.0" />
+					</HBox.margin>
+					<padding>
+						<Insets right="4.0" />
+					</padding>
+				</HBox>
+				<HBox alignment="CENTER_RIGHT" prefWidth="41.0" styleClass="counter">
+					<children>
+						<Text fx:id="counter8" text="32" />
+					</children>
+					<HBox.margin>
+						<Insets left="28.0" right="28.0" />
+					</HBox.margin>
+					<padding>
+						<Insets right="4.0" />
+					</padding>
+				</HBox>
+				<HBox alignment="CENTER_RIGHT" prefWidth="41.0" styleClass="counter">
+					<children>
+						<Text fx:id="counter9" text="32" />
+					</children>
+					<HBox.margin>
+						<Insets left="28.0" right="28.0" />
+					</HBox.margin>
+					<padding>
+						<Insets right="4.0" />
+					</padding>
+				</HBox>
+				<HBox alignment="CENTER_RIGHT" prefWidth="41.0" styleClass="counter">
+					<children>
+						<Text fx:id="counter10" text="32" />
+					</children>
+					<HBox.margin>
+						<Insets left="28.0" right="28.0" />
+					</HBox.margin>
+					<padding>
+						<Insets right="4.0" />
+					</padding>
+				</HBox>
+				<HBox alignment="CENTER_RIGHT" prefWidth="41.0" styleClass="counter">
+					<children>
+						<Text fx:id="counter1" text="32" />
+					</children>
+					<HBox.margin>
+						<Insets left="28.0" right="28.0" />
+					</HBox.margin>
+					<padding>
+						<Insets right="4.0" />
+					</padding>
+				</HBox>
+			</children>
+			<padding>
+				<Insets left="12.0" />
+			</padding>
+		</HBox>
+		<StackPane layoutX="1032.0" layoutY="12.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+			<children>
+				<TextFlow fx:id="console" lineSpacing="2.0" prefHeight="768.0" prefWidth="250.0" styleClass="console">
+					<opaqueInsets>
+						<Insets />
+					</opaqueInsets>
+					<padding>
+						<Insets left="12.0" top="12.0" />
+					</padding></TextFlow>
+				<HBox alignment="BOTTOM_CENTER" prefHeight="600.0" prefWidth="250.0" spacing="12.0">
+					<children>
+						<Button fx:id="shuffleButton" onAction="#shuffle" styleClass="button-big">
+							<graphic>
+								<ImageView fitHeight="72.0" fitWidth="72.0">
+									<image>
+										<Image url="@images/shuffle.png" />
+									</image>
+								</ImageView>
+							</graphic>
+						</Button>
+						<Button fx:id="nextButton" onAction="#next" styleClass="button-big">
+							<graphic>
+								<ImageView fitHeight="72.0" fitWidth="72.0">
+									<image>
+										<Image url="@images/next.png" />
+									</image>
+								</ImageView>
+							</graphic>
+						</Button>
+					</children>
+					<StackPane.margin>
+						<Insets bottom="24.0" />
+					</StackPane.margin>
+				</HBox>
+			</children>
+		</StackPane>
+		<StackPane fx:id="dealerZone" alignment="BOTTOM_LEFT" layoutX="415.0" layoutY="64.0" onDragDropped="#handleDropDealer" onDragOver="#handleOverDealer" prefHeight="200.0" prefWidth="200.0" styleClass="dropzone" />
+		<StackPane fx:id="playerZone" alignment="BOTTOM_LEFT" layoutX="415.0" layoutY="328.0" onDragDropped="#handleDrop" onDragOver="#handleOver" prefHeight="200.0" prefWidth="200.0" styleClass="dropzone" />
+
+		<fx:define>
+			<ArrayList fx:id="deckCards">
+				<fx:reference source="card1" />
+				<fx:reference source="card2" />
+				<fx:reference source="card3" />
+				<fx:reference source="card4" />
+				<fx:reference source="card5" />
+				<fx:reference source="card6" />
+				<fx:reference source="card7" />
+				<fx:reference source="card8" />
+				<fx:reference source="card9" />
+				<fx:reference source="card10" />
+			</ArrayList>
+			<ArrayList fx:id="deckCounters">
+				<fx:reference source="counter1" />
+				<fx:reference source="counter2" />
+				<fx:reference source="counter3" />
+				<fx:reference source="counter4" />
+				<fx:reference source="counter5" />
+				<fx:reference source="counter6" />
+				<fx:reference source="counter7" />
+				<fx:reference source="counter8" />
+				<fx:reference source="counter9" />
+				<fx:reference source="counter10" />
+			</ArrayList>
+		</fx:define>
+
+	</children>
+</AnchorPane>

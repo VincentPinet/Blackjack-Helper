@@ -73,6 +73,11 @@ public class Solver {
 		return actions.values().stream().max(Double::compare).get();
 	}
 
+	public HashMap<String, Double> getAns(Cards player, int dealer, Cards deck) {
+		compute(player, dealer, deck);
+		return solution.get(new State(player, dealer, deck));
+	}
+
 
 	public double compute(Cards player, int dealer, Cards deck) {
 		State state = new State(player, dealer, deck);
