@@ -13,7 +13,7 @@
 <?import javafx.scene.text.TextFlow?>
 <?import java.util.ArrayList?>
 
-<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1280.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.vincentpinet.blackjack_helper.Controller">
+<AnchorPane fx:id="root" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1280.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.vincentpinet.blackjack_helper.Controller">
 	<children>
 		<Ellipse layoutX="515.0" layoutY="-51.0" radiusX="663.0" radiusY="602.0" styleClass="circle" />
 		<HBox spacing="4.0" styleClass="deck" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
@@ -240,16 +240,16 @@
 				<Insets left="12.0" />
 			</padding>
 		</HBox>
-		<StackPane layoutX="1032.0" layoutY="12.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-			<children>
-				<TextFlow fx:id="console" lineSpacing="2.0" prefHeight="768.0" prefWidth="250.0" styleClass="console">
-					<opaqueInsets>
-						<Insets />
-					</opaqueInsets>
-					<padding>
-						<Insets left="12.0" top="12.0" />
-					</padding></TextFlow>
-				<HBox alignment="BOTTOM_CENTER" prefHeight="600.0" prefWidth="250.0" spacing="12.0">
+      <AnchorPane layoutX="1030.0" AnchorPane.bottomAnchor="160.0" AnchorPane.rightAnchor="0.0">
+         <children>
+      				<TextFlow fx:id="console" lineSpacing="2.0" prefHeight="608.0" prefWidth="250.0" styleClass="console" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      					<padding>
+      						<Insets left="12.0" top="12.0" />
+      					</padding>
+            </TextFlow>
+         </children>
+      </AnchorPane>
+				<HBox alignment="CENTER" layoutX="1030.0" layoutY="600.0" prefHeight="160.0" prefWidth="250.0" spacing="12.0" styleClass="console" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
 					<children>
 						<Button fx:id="shuffleButton" onAction="#shuffle" styleClass="button-big">
 							<graphic>
@@ -270,14 +270,20 @@
 							</graphic>
 						</Button>
 					</children>
-					<StackPane.margin>
-						<Insets bottom="24.0" />
-					</StackPane.margin>
 				</HBox>
-			</children>
-		</StackPane>
-		<StackPane fx:id="dealerZone" alignment="BOTTOM_LEFT" layoutX="415.0" layoutY="64.0" onDragDropped="#handleDropDealer" onDragOver="#handleOverDealer" prefHeight="200.0" prefWidth="200.0" styleClass="dropzone" />
-		<StackPane fx:id="playerZone" alignment="BOTTOM_LEFT" layoutX="415.0" layoutY="328.0" onDragDropped="#handleDrop" onDragOver="#handleOver" prefHeight="200.0" prefWidth="200.0" styleClass="dropzone" />
+      <StackPane fx:id="binZone" layoutX="147.0" layoutY="182.0" onDragDropped="#handleDropBin" onDragExited="#handleExitBin" onDragOver="#handleOverBin" prefHeight="202.0" prefWidth="202.0" visible="false">
+         <children>
+            <ImageView disable="true" fitHeight="96.0" fitWidth="96.0" opacity="0.06" preserveRatio="true">
+               <image>
+                  <Image url="@images/bin.png" />
+               </image>
+            </ImageView>
+            <Rectangle disable="true" height="200.0" styleClass="bin" width="200.0" />
+         </children></StackPane>
+      <Rectangle disable="true" height="140.0" layoutX="465.0" layoutY="81.0" styleClass="layout" width="100.0" />
+		<StackPane fx:id="dealerZone" layoutX="465.0" layoutY="81.0" onDragDropped="#handleDropDealer" onDragOver="#handleOverDealer" prefHeight="140.0" prefWidth="100.0" styleClass="dropzone" />
+      <Rectangle disable="true" height="140.0" layoutX="465.0" layoutY="359.0" styleClass="layout" width="100.0" />
+		<StackPane fx:id="playerZone" alignment="BOTTOM_LEFT" layoutX="463.0" layoutY="357.0" onDragDropped="#handleDrop" onDragOver="#handleOver" prefHeight="144.0" prefWidth="104.0" styleClass="dropzone" AnchorPane.bottomAnchor="271.0" AnchorPane.leftAnchor="467.0" />
 
 		<fx:define>
 			<ArrayList fx:id="deckCards">

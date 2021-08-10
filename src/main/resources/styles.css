@@ -49,10 +49,24 @@
 	-fx-opacity : 1;
 }
 
-.dropzone {
-	-fx-border-color: rgba(33, 33, 33, 1);
-	-fx-border-width: 2;
-	-fx-border-radius: 60;
+.layout {
+	-fx-fill : transparent;
+	-fx-stroke: rgba(33, 33, 33, 1);
+	-fx-stroke-type: outside;
+	-fx-stroke-width: 2;
+	-fx-stroke-dash-array: 10 130 10 90;
+	-fx-stroke-dash-offset: 5;
+	-fx-stroke-line-cap: butt;
+}
+
+.bin {
+	-fx-fill : transparent;
+	-fx-opacity : 0.06;
+	-fx-stroke: rgba(0, 0, 0, 1);
+	-fx-stroke-width: 2;
+	-fx-stroke-dash-array: 10 190 10 190;
+	-fx-stroke-dash-offset: 5;
+	-fx-stroke-line-cap: butt;
 }
 
 .card-passive {

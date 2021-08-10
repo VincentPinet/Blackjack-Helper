@@ -5,7 +5,12 @@ import java.util.ArrayList;
 
 import javafx.geometry.Insets;
 
+import java.lang.Thread;
+import javafx.concurrent.Task;
+
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Cursor;
 import javafx.scene.layout.StackPane;
 import javafx.scene.control.Button;
 import javafx.scene.shape.Rectangle;
@@ -30,11 +35,13 @@ public class Controller {
 	private int dealer;
 
 	@FXML
+	private Node root;
+	@FXML
 	private Button shuffleButton, nextButton;
 	@FXML
 	private TextFlow console;
 	@FXML
-	private StackPane playerZone, dealerZone;
+	private StackPane playerZone, dealerZone, binZone;
 	@FXML
 	private ArrayList<Rectangle> deckCards;
 	@FXML
@@ -49,18 +56,25 @@ public class Controller {
 
 	@FXML
 	public void initialize() {
-
 		int _rank = 1;
 		for (Rectangle card : deckCards) {
-			final String rank = "" + _rank;
+			final int rank = _rank;
 			card.setOnDragDetected(new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent event) {
-					if (deck.contains(Integer.parseInt(rank)) == 0) return;
+					if (deck.contains(rank) == 0) return;
 					Dragboard db = card.startDragAndDrop(TransferMode.ANY);
 					ClipboardContent cc = new ClipboardContent();
-					cc.putString(rank);
+					cc.putString("" + rank);
 					db.setContent(cc);
+					binZone.setVisible(true);
+					event.consume();
+				}
+			});
+			card.setOnDragDone(new EventHandler<DragEvent>() {
+				@Override
+				public void handle(DragEvent event) {
+					binZone.setVisible(false);
 					event.consume();
 				}
 			});
@@ -83,20 +97,17 @@ public class Controller {
 	}
 
 	@FXML
-	private void handleOverDealer(DragEvent event) {
-		if (dealer == 0)
-			event.acceptTransferModes(TransferMode.ANY);
-		event.consume();
-	}
-
-	@FXML
 	public void handleDrop(DragEvent event) {
 		int rank = Integer.parseInt(event.getDragboard().getString());
 
 		Parent card = cardBuilder(rank);
 		StackPane.setMargin(card, new Insets(0, 0, 24 * player.size(), 32 * player.size()));
 		Button button = (Button) card.lookup(".button-small");
-		button.setOnAction( e -> { playerZone.getChildren().remove(card); deck.draw(player, rank); updateCounters(); });
+		button.setOnAction( e -> {
+			playerZone.getChildren().remove(card);
+			deck.draw(player, rank);
+			updateCounters();
+		});
 		playerZone.getChildren().add(card);
 
 		player.draw(deck, rank);
@@ -108,6 +119,13 @@ public class Controller {
 	}
 
 	@FXML
+	private void handleOverDealer(DragEvent event) {
+		if (dealer == 0)
+			event.acceptTransferModes(TransferMode.ANY);
+		event.consume();
+	}
+
+	@FXML
 	public void handleDropDealer(DragEvent event) {
 		int rank = Integer.parseInt(event.getDragboard().getString());
 
@@ -115,11 +133,15 @@ public class Controller {
 
 		Parent card = cardBuilder(rank);
 		Button button = (Button) card.lookup(".button-small");
-		button.setOnAction( e -> { dealerZone.getChildren().remove(card); deck.add(rank); dealer = 0; updateCounters();});
+		button.setOnAction( e -> {
+			dealerZone.getChildren().remove(card);
+			deck.add(rank); dealer = 0;
+			updateCounters();
+		});
 		dealerZone.getChildren().add(card);
 
 		dealer = rank;
-		deck.remove(rank);
+		this.deck.remove(rank);
 		updateCounters();
 		if (player.size() >= 2 && dealer != 0) computeActions();
 
@@ -128,25 +150,58 @@ public class Controller {
 	}
 
 	@FXML
+	private void handleOverBin(DragEvent event) {
+		for (Node node : binZone.getChildren())
+			node.setStyle("-fx-opacity: 0.12");
+		event.acceptTransferModes(TransferMode.ANY);
+		event.consume();
+	}
+
+	@FXML
+	private void handleExitBin(DragEvent event) {
+		for (Node node : binZone.getChildren())
+			node.setStyle("-fx-opacity: 0.06");
+		event.consume();
+	}
+
+	@FXML
+	public void handleDropBin(DragEvent event) {
+		int rank = Integer.parseInt(event.getDragboard().getString());
+		deck.remove(rank);
+		updateCounters();
+		event.setDropCompleted(true);
+		event.consume();
+	}
+
+	@FXML
 	private void next(ActionEvent event) {
 		clear();
-		// console.getScene().getRoot().setCursor(Cursor.WAIT);
-		double ev = solver.compute_ev(deck);
+		root.setCursor(Cursor.WAIT);
 
-		Text text = new Text("EV : " + String.format("%+.4f", ev * 100) + "%\n\n");
-		if (ev > 0)
-			text.setStyle("-fx-fill: rgba(96, 255, 96, 1);");
-		else
-			text.setStyle("-fx-fill: rgba(255, 192, 0, 1);");
+		final Cards curr_deck = new Cards(deck);
+		Task<Double> task = new Task<Double>() {
+			@Override
+			public Double call() {
+				return solver.compute_ev(curr_deck);
+			}
+		};
 
-		console.getChildren().add(text);
-		// console.getScene().getRoot().setCursor(Cursor.DEFAULT);
+		task.setOnSucceeded(e -> {
+			double ev = task.getValue();
+			Text text = new Text("EV : " + String.format("%+.4f", ev * 100) + "%\n\n");
+			if (ev > 0) text.setStyle("-fx-fill: rgba(96, 255, 96, 1);");
+			else text.setStyle("-fx-fill: rgba(255, 192, 0, 1);");
+			console.getChildren().add(text);
+			root.setCursor(Cursor.DEFAULT);
+		});
+
+		new Thread(task).start();
 	}
 
 	@FXML
 	private void shuffle(ActionEvent event) {
 		clear();
-		deck = new Cards(8);
+		deck.init(8);
 		updateCounters();
 	}
 
@@ -167,7 +222,7 @@ public class Controller {
 	}
 
 	private void clear() {
-		player = new Cards();
+		player.init(0);
 		dealer = 0;
 		playerZone.getChildren().clear();
 		dealerZone.getChildren().clear();
