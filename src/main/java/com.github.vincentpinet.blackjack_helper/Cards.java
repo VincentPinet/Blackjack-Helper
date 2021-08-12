@@ -12,10 +12,6 @@ public class Cards {
 		this.count = 0;
 	}
 
-	public Cards(int n) {
-		init(n);
-	}
-
 	public Cards(Cards o) {
 		this.cards = o.cards;
 		this.size = o.size;
@@ -30,6 +26,12 @@ public class Cards {
 			this.cards = (this.cards << 6) + 4 * n;
 		this.size = 52 * n;
 		this.count = (10*4 + 9*10/2) * 4 * n;
+	}
+
+	public void init(Cards o) {
+		this.cards = o.cards;
+		this.size = o.size;
+		this.count = o.count;
 	}
 
 	public int size() {

@@ -9,9 +9,9 @@ import java.lang.Thread;
 import javafx.concurrent.Task;
 
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Cursor;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.Button;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -23,129 +23,125 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.DragEvent;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 
 public class Controller {
 
-	private Solver solver;
-	private Cards player, deck;
-	private int dealer;
+	private final Solver solver;
+	private final ObservableCards player, playerSplitted, dealer, deck;
 
 	@FXML
 	private Node root;
 	@FXML
-	private Button shuffleButton, nextButton;
+	private Button shuffleButton, nextButton, splitButton;
 	@FXML
 	private TextFlow console;
 	@FXML
-	private StackPane playerZone, dealerZone, binZone;
+	private StackPane playerZone, playerSplittedZone, dealerZone, binZone;
+	@FXML
+	private Rectangle playerSplittedLayout;
 	@FXML
 	private ArrayList<Rectangle> deckCards;
 	@FXML
 	private ArrayList<Text> deckCounters;
 
 	public Controller() {
-		solver = new Solver();
-		player = new Cards();
-		deck = new Cards(8);
-		dealer = 0;
+		this.solver = new Solver();
+		this.player = new ObservableCards();
+		this.playerSplitted = new ObservableCards();
+		this.deck = new ObservableCards();
+		this.dealer = new ObservableCards();
 	}
 
 	@FXML
 	public void initialize() {
-		int _rank = 1;
+
+		{int i = 1;
 		for (Rectangle card : deckCards) {
-			final int rank = _rank;
-			card.setOnDragDetected(new EventHandler<MouseEvent>() {
-				@Override
-				public void handle(MouseEvent event) {
-					if (deck.contains(rank) == 0) return;
-					Dragboard db = card.startDragAndDrop(TransferMode.ANY);
-					ClipboardContent cc = new ClipboardContent();
-					cc.putString("" + rank);
-					db.setContent(cc);
-					binZone.setVisible(true);
-					event.consume();
-				}
-			});
-			card.setOnDragDone(new EventHandler<DragEvent>() {
-				@Override
-				public void handle(DragEvent event) {
-					binZone.setVisible(false);
-					event.consume();
-				}
-			});
-			_rank++;
-		}
+			final int rank = i;
+			card.setOnDragDetected(e -> handleDetected(e, card, rank));
+			card.setOnDragDone(e -> { binZone.setVisible(false); e.consume(); });
+			i++;
+		}};
+
+		deck.addListener((observable, oldValue, newValue) -> {
+			for (int i = 1; i <= 10; i++)
+				deckCounters.get(i - 1).setText("" + newValue.contains(i));
+		});
+
 		clear();
-		updateCounters();
+		deck.init(8);
+
+		for (ObservableCards hand : new ObservableCards[]{dealer, player, playerSplitted})
+			hand.addListener((observable, oldValue, newValue) -> showStrategy(hand));
+
+		playerZone.setOnDragDropped(e -> handleDrop(e, playerZone, player));
+		playerSplittedZone.setOnDragDropped(e -> handleDrop(e, playerSplittedZone, playerSplitted));
+		dealerZone.setOnDragDropped(e -> handleDrop(e, dealerZone, dealer));
+
 	}
 
-	@FXML
-	private void handleOver(DragEvent event) {
-		int card = Integer.parseInt(event.getDragboard().getString());
 
-		player.add(card);
-		if (player.sum() <= 21)
-			event.acceptTransferModes(TransferMode.ANY);
-		player.remove(card);
+	private void showStrategy(ObservableCards hand) {
+		splitButton.setVisible(player.is_splitted() == 0 && player.is_splittable() > 0 && dealer.sum() != 0);
+		if (hand.size() >= 2 && hand.sum() <= 21 && dealer.sum() != 0)
+			computeActions(hand);
+		else if (player.is_splitted() == 0 && player.size() >= 2 && player.sum() <= 21 && dealer.sum() != 0)
+			computeActions(player);
+	}
 
+
+	private void handleDetected(MouseEvent event, Rectangle card, int rank) {
+		if (deck.contains(rank) == 0) return;
+		Dragboard db = card.startDragAndDrop(TransferMode.ANY);
+		ClipboardContent cc = new ClipboardContent();
+		cc.putString("" + rank);
+		db.setContent(cc);
+		binZone.setVisible(true);
+		event.consume();
+	}
+
+
+	public void handleDrop(DragEvent event, StackPane zone, ObservableCards hand) {
+		int rank = Integer.parseInt(event.getDragboard().getString());
+
+		AnchorPane card = cardBuilder(rank);
+		StackPane.setMargin(card, new Insets(0, 0, 24 * hand.size(), 32 * hand.size()));
+		Button button = (Button) card.lookup(".button-small");
+		button.setOnAction( e -> {
+			zone.getChildren().remove(card);
+			deck.add(rank);
+			hand.remove(rank);
+		});
+		zone.getChildren().add(card);
+
+		deck.remove(rank);
+		hand.add(rank);
+
+		event.setDropCompleted(true);
 		event.consume();
 	}
 
 	@FXML
-	public void handleDrop(DragEvent event) {
-		int rank = Integer.parseInt(event.getDragboard().getString());
+	private void handleOver(DragEvent event) {
+		if (!player.is_bust())
+			event.acceptTransferModes(TransferMode.ANY);
+		event.consume();
+	}
 
-		Parent card = cardBuilder(rank);
-		StackPane.setMargin(card, new Insets(0, 0, 24 * player.size(), 32 * player.size()));
-		Button button = (Button) card.lookup(".button-small");
-		button.setOnAction( e -> {
-			playerZone.getChildren().remove(card);
-			deck.draw(player, rank);
-			updateCounters();
-		});
-		playerZone.getChildren().add(card);
-
-		player.draw(deck, rank);
-		updateCounters();
-		if (player.size() >= 2 && dealer != 0) computeActions();
-
-		event.setDropCompleted(true);
+	@FXML
+	private void handleOverSplitted(DragEvent event) {
+		if (!playerSplitted.is_bust())
+			event.acceptTransferModes(TransferMode.ANY);
 		event.consume();
 	}
 
 	@FXML
 	private void handleOverDealer(DragEvent event) {
-		if (dealer == 0)
+		if (dealer.sum() == 0)
 			event.acceptTransferModes(TransferMode.ANY);
-		event.consume();
-	}
-
-	@FXML
-	public void handleDropDealer(DragEvent event) {
-		int rank = Integer.parseInt(event.getDragboard().getString());
-
-		if (dealer == rank) return;
-
-		Parent card = cardBuilder(rank);
-		Button button = (Button) card.lookup(".button-small");
-		button.setOnAction( e -> {
-			dealerZone.getChildren().remove(card);
-			deck.add(rank); dealer = 0;
-			updateCounters();
-		});
-		dealerZone.getChildren().add(card);
-
-		dealer = rank;
-		this.deck.remove(rank);
-		updateCounters();
-		if (player.size() >= 2 && dealer != 0) computeActions();
-
-		event.setDropCompleted(true);
 		event.consume();
 	}
 
@@ -168,7 +164,6 @@ public class Controller {
 	public void handleDropBin(DragEvent event) {
 		int rank = Integer.parseInt(event.getDragboard().getString());
 		deck.remove(rank);
-		updateCounters();
 		event.setDropCompleted(true);
 		event.consume();
 	}
@@ -178,11 +173,10 @@ public class Controller {
 		clear();
 		root.setCursor(Cursor.WAIT);
 
-		final Cards curr_deck = new Cards(deck);
 		Task<Double> task = new Task<Double>() {
 			@Override
 			public Double call() {
-				return solver.compute_ev(curr_deck);
+				return solver.compute_ev(new Cards(deck));
 			}
 		};
 
@@ -202,36 +196,27 @@ public class Controller {
 	private void shuffle(ActionEvent event) {
 		clear();
 		deck.init(8);
-		updateCounters();
 	}
 
-	private Parent cardBuilder(int rank) {
-		try {
-			Parent res = FXMLLoader.load(getClass().getResource("/Card.fxml"));
-			Text text = (Text) res.lookup(".char");
-			text.setText(rank==1 ? "A" : rank==10 ? "T" : ""+rank);
-			return res;
-		} catch (Exception e) {
-			return null;
-		}
+	@FXML
+	private void split(ActionEvent event) {
+
+		for (Node card : playerZone.getChildren())
+			((AnchorPane)card).getChildren().remove(card.lookup(".button-small"));
+
+		AnchorPane card = (AnchorPane) playerZone.getChildren().remove(playerZone.getChildren().size() - 1);
+		StackPane.setMargin(card, new Insets(0, 0, 0, 0));
+		playerSplittedZone.getChildren().add(card);
+		playerSplittedZone.setVisible(true);
+		playerSplittedLayout.setVisible(true);
+
+		player.do_split();
+		playerSplitted.init(player);
 	}
 
-	private void updateCounters() {
-		for (int rank = 1; rank <= 10; rank++)
-			deckCounters.get(rank - 1).setText("" + deck.contains(rank));
-	}
 
-	private void clear() {
-		player.init(0);
-		dealer = 0;
-		playerZone.getChildren().clear();
-		dealerZone.getChildren().clear();
-		console.getChildren().clear();
-		console.getChildren().add(new Text(">_\n"));
-	}
-
-	private void computeActions() {
-		Map<String, Double> actions = solver.getAns(player, dealer, deck);
+	private void computeActions(Cards p) {
+		Map<String, Double> actions = solver.getAns(new Cards(p), dealer.sum(), new Cards(deck));
 		ArrayList< Map.Entry<String, Double> > sorted = new ArrayList<Map.Entry<String, Double>>(actions.entrySet());
 
 		sorted.sort(Map.Entry.<String, Double>comparingByValue().reversed());
@@ -242,5 +227,31 @@ public class Controller {
 			console.getChildren().add(text);
 		}
 		console.getChildren().add(new Text("\n"));
+	}
+
+
+	private AnchorPane cardBuilder(int rank) {
+		try {
+			AnchorPane res = FXMLLoader.load(getClass().getResource("/Card.fxml"));
+			Text text = (Text) res.lookup(".char");
+			text.setText(rank==1 ? "A" : rank==10 ? "T" : ""+rank);
+			return res;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+
+	private void clear() {
+		player.init(0);
+		playerSplitted.init(0);
+		dealer.init(0);
+		playerZone.getChildren().clear();
+		playerSplittedZone.getChildren().clear();
+		playerSplittedZone.setVisible(false);
+		playerSplittedLayout.setVisible(false);
+		dealerZone.getChildren().clear();
+		console.getChildren().clear();
+		console.getChildren().add(new Text(">_\n"));
 	}
 }
