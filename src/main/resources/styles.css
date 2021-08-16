@@ -7,42 +7,46 @@
 }
 
 @font-face {
+	src: url('fonts/Roboto-Light.ttf');
+}
+
+@font-face {
 	src: url('fonts/DigitalDisplay.ttf');
 }
 
 .root {
-	-fx-background-color : rgba(240, 240, 240, 1);
+	-fx-background-color : rgb(240, 240, 240);
 }
 
 .circle {
-	-fx-fill: rgba(255, 255, 255, 1);
+	-fx-fill: white;
 	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 10, 0, 0, 4);
 }
 
 .button-big {
-	-fx-background-color: rgba(240, 240, 240, 1);
+	-fx-background-color: rgb(240, 240, 240);
 	-fx-background-radius: 50%;
 	-fx-padding: 16;
 }
 
 .button-big:hover {
-	-fx-background-color: rgba(255, 255, 255, 1);
+	-fx-background-color: white;
 }
 
 .button-big:armed {
-	-fx-background-color: rgba(225, 225, 225, 1);
+	-fx-background-color: rgb(225, 225, 225);
 	-fx-background-insets: 2;
 }
 
 .button-medium {
-	-fx-background-color: rgba(225, 225, 225, 1);
+	-fx-background-color: rgb(225, 225, 225);
 	-fx-background-radius: 50%;
 	-fx-padding: 12;
 	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 10, 0, 0, 2);
 }
 
 .button-medium:hover {
-	-fx-background-color: rgba(240, 240, 240, 1);
+	-fx-background-color: rgb(240, 240, 240);
 	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 10, 0, 0, 4);
 }
 
@@ -68,7 +72,7 @@
 
 .layout {
 	-fx-fill : transparent;
-	-fx-stroke: rgba(33, 33, 33, 1);
+	-fx-stroke: rgb(33, 33, 33);
 	-fx-stroke-type: outside;
 	-fx-stroke-width: 2;
 	-fx-stroke-dash-array: 10 130 10 90;
@@ -79,7 +83,7 @@
 .bin {
 	-fx-fill : transparent;
 	-fx-opacity : 0.06;
-	-fx-stroke: rgba(0, 0, 0, 1);
+	-fx-stroke: black;
 	-fx-stroke-width: 2;
 	-fx-stroke-dash-array: 10 190 10 190;
 	-fx-stroke-dash-offset: 5;
@@ -87,8 +91,8 @@
 }
 
 .card-passive {
-	-fx-fill : rgba(240, 240, 240, 1);
-	-fx-stroke: rgba(33, 33, 33, 1);
+	-fx-fill : rgb(240, 240, 240);
+	-fx-stroke: rgb(33, 33, 33);
 	-fx-stroke-type: inside;
 	-fx-stroke-width: 2;
 	-fx-arc-height : 12;
@@ -97,8 +101,8 @@
 }
 
 .card {
-	-fx-fill : rgba(240, 240, 240, 1);
-	-fx-stroke: rgba(33, 33, 33, 1);
+	-fx-fill : rgb(240, 240, 240);
+	-fx-stroke: rgb(33, 33, 33);
 	-fx-stroke-type: inside;
 	-fx-stroke-width: 2;
 	-fx-arc-height : 12;
@@ -107,47 +111,142 @@
 }
 
 .card:hover {
-	-fx-fill : rgba(255, 255, 255, 1);
-	-fx-stroke: rgba(0, 0, 0, 1);
+	-fx-fill : white;
+	-fx-stroke: black;
 	-fx-cursor: open_hand;
-	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 10, 0, 0, 6);
+	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 10, 0, 0, 4);
 }
 
 .card:armed {
-	-fx-fill : rgba(225, 225, 225, 1);
+	-fx-fill : rgb(225, 225, 225);
 	-fx-stroke-width: 2;
 	-fx-cursor: closed_hand;
 }
 
 .deck {
-	-fx-background-color: rgba(240, 240, 240, 1);
+	-fx-background-color: rgb(240, 240, 240);
 }
 
 .console {
-	-fx-background-color: rgba(33, 33, 33, 1);
-	-fx-border-color: rgba(240, 240, 240, 1);
+	-fx-background-color: rgb(33, 33, 33);
+	-fx-border-color: rgb(240, 240, 240);
 	-fx-border-style: hidden hidden hidden solid;
 	-fx-border-width: 2;
 }
 
 .console Text {
-	-fx-fill: rgba(240, 240, 240, 1);
+	-fx-fill: rgb(240, 240, 240);
 	-fx-font-family: 'Roboto Mono Medium';
 	-fx-font-size: 20.0px;
 }
 
 .counter {
-	-fx-background-color: rgba(33, 33, 33, 1);
+	-fx-background-color: rgb(33, 33, 33);
 }
 
 .counter Text {
-	-fx-fill: rgba(240, 240, 240, 1);
+	-fx-fill: rgb(240, 240, 240);
 	-fx-font-family: 'Digital Display';
 	-fx-font-size: 24.0px;
 }
 
-.char {
-	-fx-fill: rgba(33, 33, 33, 1);
+.letter {
+	-fx-fill: rgb(33, 33, 33);
 	-fx-font-family: 'Roboto Black';
 	-fx-font-size: 32.0px;
+}
+
+.options, .text-field {
+	-fx-fill: rgb(33, 33, 33);
+	-fx-font-family: 'Roboto Light';
+	-fx-font-size: 20.0px;
+}
+
+.switch > .box {
+	-fx-background-color: white, rgb(200, 200, 200), white, rgb(245, 245, 245);
+	-fx-background-insets: 0, 0, -4 22 -4 -4;
+	-fx-background-radius: 16;
+	-fx-padding: 10 36 0 0;
+	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.05), 2, 0, 0, 1);
+}
+
+.switch:selected > .box {
+	-fx-background-color: rgb(255, 255, 255), rgb(200, 225, 255), rgb(255, 255, 255), rgb(64, 128, 255);
+	-fx-background-insets: 0, 0, -4 -4 -4 22;
+}
+
+.switch > .box > .mark {
+	visibility: hidden;
+}
+
+.spinner {
+	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.05), 2, 0, 0, 1);
+}
+
+.spinner:focused {
+	-fx-background-color: rgb(245, 245, 245);
+	-fx-background-radius: 0;
+}
+
+.spinner > .text-field {
+	-fx-text-fill: rgb(33, 33, 33);
+	-fx-font-family: 'Roboto Light';
+	-fx-background-color: rgb(245, 245, 245);
+	-fx-stroke-width: 0;
+}
+
+.spinner > .increment-arrow-button,
+.spinner > .decrement-arrow-button {
+	-fx-background-color: rgb(225, 225, 225);
+	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.05), 2, 0, 0, 1);
+}
+
+.spinner > .increment-arrow-button:pressed,
+.spinner > .decrement-arrow-button:pressed {
+	-fx-background-color: rgb(200, 200, 200);
+}
+
+.spinner > .increment-arrow-button .increment-arrow {
+	-fx-background-color: rgb(33, 33, 33);
+	-fx-shape: "M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14l-6-6z";
+}
+
+.spinner > .decrement-arrow-button .decrement-arrow {
+	-fx-background-color: rgb(33, 33, 33);
+	-fx-shape: "M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6-1.41-1.41z";
+}
+
+.combo-box-base {
+	-fx-background-color: rgb(240, 240, 240);
+	-fx-text-fill: rgb(33, 33, 33);
+	-fx-font-family: 'Roboto Light';
+	-fx-font-size: 20.0px;
+	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.05), 2, 0, 0, 1);
+}
+
+.combo-box-base > .arrow-button {
+	-fx-padding: 6;
+	-fx-background-color: rgb(225, 225, 225);
+}
+
+.combo-box-base > .arrow-button > .arrow {
+	-fx-background-color: rgb(33, 33, 33);
+ 	-fx-shape: "M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6-1.41-1.41z"
+}
+
+.combo-box-popup > .list-view {
+	-fx-background-color: rgb(240, 240, 240);
+	-fx-background-insets: 2;
+	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.05), 2, 0, 0, 1);
+}
+
+.list-cell,
+.list-cell:selected {
+	-fx-background-color: rgb(240, 240, 240);
+	-fx-text-fill: rgb(33, 33, 33);
+}
+
+.list-cell:hover,
+.list-cell:selected:hover {
+	-fx-background-color: rgb(225, 225, 225);
 }

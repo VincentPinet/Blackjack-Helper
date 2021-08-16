@@ -10,7 +10,7 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="136.0" prefWidth="97.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
 		<Rectangle height="136.0" layoutX="9.0" layoutY="7.0" styleClass="card-passive" width="97.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-		<Text disable="true" styleClass="char" AnchorPane.leftAnchor="4.0" AnchorPane.topAnchor="4.0" />
+		<Text disable="true" styleClass="letter" AnchorPane.leftAnchor="4.0" AnchorPane.topAnchor="4.0" />
 		<Button styleClass="button-small" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="4.0">
 			<graphic>
 				<ImageView fitHeight="24.0" fitWidth="24.0" preserveRatio="true">

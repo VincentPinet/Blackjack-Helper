@@ -2,6 +2,9 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -13,9 +16,9 @@
 <?import javafx.scene.text.TextFlow?>
 <?import java.util.ArrayList?>
 
-<AnchorPane fx:id="root" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1280.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.vincentpinet.blackjack_helper.Controller">
+<AnchorPane fx:id="root" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1280.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.vincentpinet.blackjack_helper.Controller">
 	<children>
-		<Ellipse layoutX="515.0" layoutY="-51.0" radiusX="663.0" radiusY="602.0" styleClass="circle" />
+		<Ellipse layoutX="511.0" layoutY="-51.0" radiusX="663.0" radiusY="602.0" styleClass="circle" />
 		<HBox spacing="4.0" styleClass="deck" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
 			<padding>
 				<Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
@@ -24,7 +27,7 @@
 				<StackPane alignment="TOP_LEFT">
 					<children>
 						<Rectangle fx:id="card2" height="136.0" styleClass="card" width="97.0" />
-						<Text disable="true" styleClass="char" text="2">
+						<Text disable="true" styleClass="letter" text="2">
 							<StackPane.margin>
 								<Insets left="4.0" top="4.0" />
 							</StackPane.margin>
@@ -34,7 +37,7 @@
 				<StackPane alignment="TOP_LEFT" layoutX="22.0" layoutY="22.0">
 					<children>
 						<Rectangle fx:id="card3" height="136.0" styleClass="card" width="97.0" />
-						<Text disable="true" styleClass="char" text="3">
+						<Text disable="true" styleClass="letter" text="3">
 							<StackPane.margin>
 								<Insets left="4.0" top="4.0" />
 							</StackPane.margin>
@@ -44,7 +47,7 @@
 				<StackPane alignment="TOP_LEFT" layoutX="22.0" layoutY="22.0">
 					<children>
 						<Rectangle fx:id="card4" height="136.0" styleClass="card" width="97.0" />
-						<Text disable="true" styleClass="char" text="4">
+						<Text disable="true" styleClass="letter" text="4">
 							<StackPane.margin>
 								<Insets left="4.0" top="4.0" />
 							</StackPane.margin>
@@ -54,7 +57,7 @@
 				<StackPane alignment="TOP_LEFT" layoutX="123.0" layoutY="22.0">
 					<children>
 						<Rectangle fx:id="card5" height="136.0" styleClass="card" width="97.0" />
-						<Text disable="true" styleClass="char" text="5">
+						<Text disable="true" styleClass="letter" text="5">
 							<StackPane.margin>
 								<Insets left="4.0" top="4.0" />
 							</StackPane.margin>
@@ -64,7 +67,7 @@
 				<StackPane alignment="TOP_LEFT" layoutX="22.0" layoutY="22.0">
 					<children>
 						<Rectangle fx:id="card6" height="136.0" styleClass="card" width="97.0" />
-						<Text disable="true" styleClass="char" text="6">
+						<Text disable="true" styleClass="letter" text="6">
 							<StackPane.margin>
 								<Insets left="4.0" top="4.0" />
 							</StackPane.margin>
@@ -74,7 +77,7 @@
 				<StackPane alignment="TOP_LEFT" layoutX="123.0" layoutY="22.0">
 					<children>
 						<Rectangle fx:id="card7" height="136.0" styleClass="card" width="97.0" />
-						<Text disable="true" styleClass="char" text="7">
+						<Text disable="true" styleClass="letter" text="7">
 							<StackPane.margin>
 								<Insets left="4.0" top="4.0" />
 							</StackPane.margin>
@@ -84,7 +87,7 @@
 				<StackPane alignment="TOP_LEFT" layoutX="224.0" layoutY="22.0">
 					<children>
 						<Rectangle fx:id="card8" height="136.0" styleClass="card" width="97.0" />
-						<Text disable="true" styleClass="char" text="8">
+						<Text disable="true" styleClass="letter" text="8">
 							<StackPane.margin>
 								<Insets left="4.0" top="4.0" />
 							</StackPane.margin>
@@ -94,7 +97,7 @@
 				<StackPane alignment="TOP_LEFT" layoutX="325.0" layoutY="22.0">
 					<children>
 						<Rectangle fx:id="card9" height="136.0" styleClass="card" width="97.0" />
-						<Text disable="true" styleClass="char" text="9">
+						<Text disable="true" styleClass="letter" text="9">
 							<StackPane.margin>
 								<Insets left="4.0" top="4.0" />
 							</StackPane.margin>
@@ -104,7 +107,7 @@
 				<StackPane alignment="TOP_LEFT" layoutX="628.0" layoutY="22.0">
 					<children>
 						<Rectangle fx:id="card10" height="136.0" styleClass="card" width="97.0" />
-						<Text disable="true" styleClass="char" text="T">
+						<Text disable="true" styleClass="letter" text="T">
 							<StackPane.margin>
 								<Insets left="4.0" top="4.0" />
 							</StackPane.margin>
@@ -114,7 +117,7 @@
 				<StackPane alignment="TOP_LEFT" layoutX="729.0" layoutY="22.0">
 					<children>
 						<Rectangle fx:id="card1" height="136.0" styleClass="card" width="97.0" />
-						<Text disable="true" styleClass="char" text="A">
+						<Text disable="true" styleClass="letter" text="A">
 							<StackPane.margin>
 								<Insets left="4.0" top="4.0" />
 							</StackPane.margin>
@@ -271,6 +274,55 @@
 						</Button>
 					</children>
 				</HBox>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Text styleClass="options" text="S-17" />
+            <CheckBox fx:id="ss17" selected="true" styleClass="switch">
+               <HBox.margin>
+                  <Insets left="8.0" right="24.0" />
+               </HBox.margin>
+            </CheckBox>
+            <Text styleClass="options" text="DAS" />
+            <CheckBox fx:id="das" selected="true" styleClass="switch">
+               <HBox.margin>
+                  <Insets left="8.0" right="24.0" />
+               </HBox.margin>
+            </CheckBox>
+            <Text layoutX="141.0" layoutY="67.0" styleClass="options" text="DOA" />
+            <CheckBox fx:id="doa" layoutX="187.0" layoutY="50.0" selected="true" styleClass="switch">
+               <HBox.margin>
+                  <Insets left="8.0" right="24.0" />
+               </HBox.margin>
+            </CheckBox>
+            <Text styleClass="options" text="HSA" />
+            <CheckBox fx:id="hsa" styleClass="switch">
+               <HBox.margin>
+                  <Insets left="8.0" right="24.0" />
+               </HBox.margin>
+            </CheckBox>
+            <Text styleClass="options" text="ES10" />
+            <CheckBox fx:id="es10" styleClass="switch">
+               <HBox.margin>
+                  <Insets left="8.0" right="24.0" />
+               </HBox.margin>
+            </CheckBox>
+            <Text styleClass="options" text="XD" />
+            <Spinner fx:id="xdSpinner" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="64.0">
+               <HBox.margin>
+                  <Insets left="8.0" right="24.0" />
+               </HBox.margin>
+            </Spinner>
+            <Text layoutX="734.0" layoutY="67.0" styleClass="options" text="BJ pays" />
+            <ComboBox fx:id="bjpaysCombobox" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="88.0">
+               <HBox.margin>
+                  <Insets left="8.0" right="24.0" />
+               </HBox.margin>
+            </ComboBox>
+         </children>
+         <padding>
+            <Insets left="12.0" right="12.0" />
+         </padding>
+      </HBox>
       <StackPane fx:id="binZone" layoutX="147.0" layoutY="182.0" onDragDropped="#handleDropBin" onDragExited="#handleExitBin" onDragOver="#handleOverBin" prefHeight="202.0" prefWidth="202.0" visible="false">
          <children>
             <ImageView disable="true" fitHeight="96.0" fitWidth="96.0" opacity="0.06" preserveRatio="true">
@@ -280,7 +332,7 @@
             </ImageView>
             <Rectangle disable="true" height="200.0" styleClass="bin" width="200.0" />
          </children></StackPane>
-      <Button fx:id="splitButton" layoutX="483.0" layoutY="472.0" onAction="#split" styleClass="button-medium" visible="false">
+      <Button fx:id="splitButton" layoutX="487.0" layoutY="485.0" onAction="#split" styleClass="button-medium" visible="false">
          <graphic>
             <ImageView fitHeight="32.0" fitWidth="32.0" preserveRatio="true">
                <image>
@@ -289,12 +341,12 @@
             </ImageView>
          </graphic>
       </Button>
-      <Rectangle disable="true" height="140.0" layoutX="465.0" layoutY="83.0" styleClass="layout" width="100.0" />
-		<StackPane fx:id="dealerZone" layoutX="465.0" layoutY="83.0" onDragOver="#handleOverDealer" prefHeight="140.0" prefWidth="100.0" styleClass="dropzone" />
-      <Rectangle disable="true" height="140.0" layoutX="463.0" layoutY="316.0" styleClass="layout" width="100.0" />
-		<StackPane fx:id="playerZone" alignment="BOTTOM_LEFT" layoutX="465.0" layoutY="310.0" onDragOver="#handleOver" prefHeight="144.0" prefWidth="104.0" styleClass="dropzone" AnchorPane.bottomAnchor="314.0" AnchorPane.leftAnchor="465.0" />
-      <Rectangle fx:id="playerSplittedLayout" disable="true" height="140.0" layoutX="686.0" layoutY="316.0" styleClass="layout" visible="false" width="100.0" />
-      <StackPane fx:id="playerSplittedZone" alignment="BOTTOM_LEFT" layoutX="690.0" layoutY="310.0" onDragOver="#handleOverSplitted" prefHeight="144.0" prefWidth="104.0" styleClass="dropzone" visible="false" AnchorPane.bottomAnchor="314.0" AnchorPane.leftAnchor="690.0" />
+      <Rectangle disable="true" height="140.0" layoutX="465.0" layoutY="102.0" styleClass="layout" width="100.0" />
+		<StackPane fx:id="dealerZone" layoutX="465.0" layoutY="102.0" onDragOver="#handleOverDealer" prefHeight="140.0" prefWidth="100.0" styleClass="dropzone" />
+      <Rectangle disable="true" height="140.0" layoutX="463.0" layoutY="335.0" styleClass="layout" width="100.0" />
+		<StackPane fx:id="playerZone" alignment="BOTTOM_LEFT" layoutX="465.0" layoutY="329.0" onDragOver="#handleOver" prefHeight="144.0" prefWidth="104.0" styleClass="dropzone" AnchorPane.bottomAnchor="295.0" AnchorPane.leftAnchor="465.0" />
+      <Rectangle fx:id="playerSplittedLayout" height="140.0" layoutX="664.0" layoutY="337.0" styleClass="layout" visible="false" width="100.0" />
+      <StackPane fx:id="playerSplittedZone" alignment="BOTTOM_LEFT" layoutX="668.0" layoutY="331.0" onDragOver="#handleOverSplitted" prefHeight="144.0" prefWidth="104.0" styleClass="dropzone" visible="false" AnchorPane.bottomAnchor="293.0" AnchorPane.leftAnchor="668.0" />
 
 		<fx:define>
 			<ArrayList fx:id="deckCards">

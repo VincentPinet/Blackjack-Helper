@@ -7,16 +7,18 @@ public class Solver {
 
 	private final HashMap<State, HashMap<String, Double>> solution;
 	private final HashMap<State, double[]> dealer_cache;
+	private final Rules rules;
 
 
-	public Solver() {
+	public Solver(Rules rules) {
 		this.solution = new HashMap<>();
 		this.dealer_cache = new HashMap<>();
+		this.rules = rules;
 	}
 
 
 	private double eval(Cards player, int dealer) {
-		if (player.is_blackjack()) return dealer==0 ? 0 : 1.5;
+		if (player.is_blackjack()) return dealer==0 ? 0 : rules.bjpays;
 		if (dealer == 0 || player.sum() > 21) return -1;
 		if (dealer > 21) return 1;
 		return (player.sum() >= dealer?1:0) - (dealer >= player.sum()?1:0);
@@ -28,7 +30,7 @@ public class Solver {
 			if (deck.contains(i) == 0) continue;
 			double adj_weight = weight * deck.contains(i) / deck.size();
 			hand.add(i);
-			if (hand.sum() > 16) {
+			if (hand.sum() >= 17 && !(!rules.ss17 && hand.sum() == 17 && hand.is_soft())) {
 				if (hand.is_blackjack()) res[0] += adj_weight;
 				else if (hand.is_bust()) res[22] += adj_weight;
 				else res[hand.sum()] += adj_weight;
@@ -78,6 +80,11 @@ public class Solver {
 		return solution.get(new State(player, dealer, deck));
 	}
 
+	public void clearCache() {
+		solution.clear();
+		dealer_cache.clear();
+	}
+
 
 	public double compute(Cards player, int dealer, Cards deck) {
 		State state = new State(player, dealer, deck);
@@ -113,8 +120,7 @@ public class Solver {
 				if (deck.contains(i) == 0) continue;
 				double weight = 1.0 * deck.contains(i) / deck.size();
 				player_splitted.draw(deck, i);
-				// STAND AFTER SPLIT ACES
-				if (player.contains(1) > 0)
+				if (player.contains(1) > 0 && !rules.hsa)
 					ev += 2 * stand(player_splitted, dealer, deck) * weight;
 				else
 					ev += 2 * compute(player_splitted, dealer, deck) * weight;
@@ -124,7 +130,7 @@ public class Solver {
 		}
 
 		// DOUBLE
-		if (player.size() == 2) {
+		if (player.size() == 2 && (rules.das || player.is_splitted() == 0) && (rules.doa || 9 <= player.sum() && player.sum() <= 11 )) {
 			ev = 0;
 			for (int i = 1; i <= 10; i++) {
 				if (deck.contains(i) == 0) continue;
@@ -135,6 +141,11 @@ public class Solver {
 			}
 			res.put("DOUBLE", ev);
 		}
+
+		// SURRENDER ES10
+		if (player.size() == 2 && player.is_splitted() == 0 && rules.es10 && dealer != 1)
+			res.put("SURR", -0.5);
+
 
 		solution.put(state, res);
 		return optimal(res);
@@ -163,9 +174,6 @@ public class Solver {
 					weight *= 1.0 * deck.contains(k) / deck.size();
 					deck.remove(k);
 					ev += compute(player, k, deck) * weight;
-					// System.out.println("" + player + " - " + (k==1?"A":k==10?"T":""+k) + " = " + (compute(player, k, deck)>0?"+":"") + compute(player, k, deck));
-					// System.out.print("" + player + " - " + (k==1?"A":k==10?"T":""+k) + " = ");
-					// System.out.println(solution.get(new State(player, k, deck)));
 					deck.add(k);
 					weight /= 1.0 * deck.contains(k) / deck.size();
 				}
