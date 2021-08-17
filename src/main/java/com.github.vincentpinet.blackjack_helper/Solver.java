@@ -1,6 +1,8 @@
 package com.github.vincentpinet.blackjack_helper;
 
 import java.util.Arrays;
+import java.util.Map;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Solver {
@@ -62,7 +64,7 @@ public class Solver {
 	}
 
 
-	private double stand(Cards player, int dealer, Cards deck) {
+	private double stand_ev(Cards player, int dealer, Cards deck) {
 		double res = 0;
 		double[] a = dealer_score(dealer, deck);
 		for (int i = 0; i <= 22; i++)
@@ -71,22 +73,24 @@ public class Solver {
 	}
 
 
+	private HashMap<Double, Double> stand_distribution(Cards player, int dealer, Cards deck) {
+		HashMap<Double, Double> res = new HashMap<>();
+		double[] a = dealer_score(dealer, deck);
+		for (int i = 0; i <= 22; i++)
+			res.merge(eval(player, i), a[i], Double::sum);
+		return res;
+	}
+
+
 	private double optimal(HashMap<String, Double> actions) {
-		return actions.values().stream().max(Double::compare).get();
-	}
-
-	public HashMap<String, Double> getAns(Cards player, int dealer, Cards deck) {
-		compute(player, dealer, deck);
-		return solution.get(new State(player, dealer, deck));
-	}
-
-	public void clearCache() {
-		solution.clear();
-		dealer_cache.clear();
+		return actions.values()
+			.stream()
+			.max(Double::compare)
+			.get();
 	}
 
 
-	public double compute(Cards player, int dealer, Cards deck) {
+	private double compute(Cards player, int dealer, Cards deck) {
 		State state = new State(player, dealer, deck);
 		if (solution.containsKey(state))
 			return optimal(solution.get(state));
@@ -98,7 +102,7 @@ public class Solver {
 			return -1;
 
 		// STAND
-		res.put("STAND", stand(player, dealer, deck));
+		res.put("STAND", stand_ev(player, dealer, deck));
 
 		// HIT
 		double ev = 0;
@@ -121,7 +125,7 @@ public class Solver {
 				double weight = 1.0 * deck.contains(i) / deck.size();
 				player_splitted.draw(deck, i);
 				if (player.contains(1) > 0 && !rules.hsa)
-					ev += 2 * stand(player_splitted, dealer, deck) * weight;
+					ev += 2 * stand_ev(player_splitted, dealer, deck) * weight;
 				else
 					ev += 2 * compute(player_splitted, dealer, deck) * weight;
 				deck.draw(player_splitted, i);
@@ -136,7 +140,7 @@ public class Solver {
 				if (deck.contains(i) == 0) continue;
 				double weight = 1.0 * deck.contains(i) / deck.size();
 				player.draw(deck, i);
-				ev += 2 * stand(player, dealer, deck) * weight;
+				ev += 2 * stand_ev(player, dealer, deck) * weight;
 				deck.draw(player, i);
 			}
 			res.put("DOUBLE", ev);
@@ -146,18 +150,92 @@ public class Solver {
 		if (player.size() == 2 && player.is_splitted() == 0 && rules.es10 && dealer != 1)
 			res.put("SURR", -0.5);
 
-
 		solution.put(state, res);
 		return optimal(res);
 	}
 
 
-	public double compute_ev(Cards deck) {
+	private HashMap<Double, Double> compute_distribution(Cards player, int dealer, Cards deck) {
+		HashMap<Double, Double> res = new HashMap<>();
+
+		if (player.is_bust()) {
+			res.put(-1.0, 1.0);
+			return res;
+		}
+
+		String action = solution.get(new State(player, dealer, deck)).entrySet()
+			.stream()
+			.max(Map.Entry.comparingByValue())
+			.get()
+			.getKey();
+
+		if (action.equals("STAND")) {
+			res = stand_distribution(player, dealer, deck);
+
+		} else if (action.equals("SURR")) {
+			res.put(-0.5, 1.0);
+
+		} else if (action.equals("HIT")) {
+			for (int i = 1; i <= 10; i++) {
+				if (deck.contains(i) == 0) continue;
+				double weight = 1.0 * deck.contains(i) / deck.size();
+				player.draw(deck, i);
+				for (var kv : compute_distribution(player, dealer, deck).entrySet())
+					res.merge(kv.getKey(), kv.getValue() * weight, Double::sum);
+				deck.draw(player, i);
+			}
+
+		} else if (action.equals("DOUBLE")) {
+			for (int i = 1; i <= 10; i++) {
+				if (deck.contains(i) == 0) continue;
+				double weight = 1.0 * deck.contains(i) / deck.size();
+				player.draw(deck, i);
+				for (var kv : stand_distribution(player, dealer, deck).entrySet())
+					res.merge(2.0 * kv.getKey(), kv.getValue() * weight, Double::sum);
+				deck.draw(player, i);
+			}
+
+		} else if (action.equals("SPLIT")) {
+			Cards player_splitted = new Cards(player);
+			player_splitted.do_split();
+			ArrayList<HashMap<Double, Double>> dists = new ArrayList<HashMap<Double, Double>>();
+			ArrayList<Double> weights = new ArrayList<>();
+			for (int i = 1; i <= 10; i++) {
+				if (deck.contains(i) == 0) continue;
+				weights.add(1.0 * deck.contains(i) / deck.size());
+				player_splitted.draw(deck, i);
+				if (player.contains(1) > 0 && !rules.hsa)
+					dists.add(stand_distribution(player_splitted, dealer, deck));
+				else
+					dists.add(compute_distribution(player_splitted, dealer, deck));
+				deck.draw(player_splitted, i);
+			}
+			for (int i = 0; i < dists.size(); i++)
+				for (var h1 : dists.get(i).entrySet())
+					for (int j = 0; j < dists.size(); j++)
+						for (var h2 : dists.get(j).entrySet())
+							res.merge(h1.getKey() + h2.getKey(), (h1.getValue() * h2.getValue()) * weights.get(i) * weights.get(j), Double::sum);
+
+		}
+
+		return res;
+	}
+
+
+	public double computeEV(HashMap<Double, Double> distribution) {
+		return distribution.entrySet()
+			.stream()
+			.mapToDouble(e -> e.getKey() * e.getValue())
+			.sum();
+	}
+
+
+	public HashMap<Double, Double> getDistribution(Cards deck) {
+		final HashMap<Double, Double> res = new HashMap<>();
 
 		double weight = 1;
-		double ev = 0;
-
  		Cards player = new Cards();
+
 		for (int i = 1; i <= 10; i++) {
 			if (deck.contains(i) == 0) continue;
 			weight *= 1.0 * deck.contains(i) / deck.size();
@@ -173,7 +251,10 @@ public class Solver {
 					if (deck.contains(k) == 0) continue;
 					weight *= 1.0 * deck.contains(k) / deck.size();
 					deck.remove(k);
-					ev += compute(player, k, deck) * weight;
+					compute(player, k, deck);
+					for (var e : compute_distribution(player, k, deck).entrySet())
+						res.merge(e.getKey(), e.getValue() * weight, Double::sum);
+
 					deck.add(k);
 					weight /= 1.0 * deck.contains(k) / deck.size();
 				}
@@ -186,6 +267,17 @@ public class Solver {
 			deck.draw(player, i);
 			weight /= 1.0 * deck.contains(i) / deck.size();
 		}
-		return ev;
+
+		return res;
+	}
+
+	public HashMap<String, Double> getAns(Cards player, int dealer, Cards deck) {
+		compute(player, dealer, deck);
+		return solution.get(new State(player, dealer, deck));
+	}
+
+	public void clearCache() {
+		solution.clear();
+		dealer_cache.clear();
 	}
 }

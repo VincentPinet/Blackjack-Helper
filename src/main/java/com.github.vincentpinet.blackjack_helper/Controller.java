@@ -1,6 +1,7 @@
 package com.github.vincentpinet.blackjack_helper;
 
 import java.util.Map;
+import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -205,19 +206,26 @@ public class Controller {
 		clear();
 		root.setCursor(Cursor.WAIT);
 
-		Task<Double> task = new Task<Double>() {
+		Task<HashMap<Double, Double>> task = new Task<>() {
 			@Override
-			public Double call() {
-				return solver.compute_ev(new Cards(deck));
+			public HashMap<Double, Double> call() {
+				return solver.getDistribution(new Cards(deck));
 			}
 		};
 
 		task.setOnSucceeded(e -> {
-			double ev = task.getValue();
-			Text text = new Text("EV : " + String.format("%+.4f", ev * 100) + "%\n\n");
-			if (ev > 0) text.setStyle("-fx-fill: rgba(96, 255, 96, 1);");
-			else text.setStyle("-fx-fill: rgba(255, 192, 0, 1);");
-			console.getChildren().add(text);
+			HashMap<Double, Double> distribution = task.getValue();
+			Double ev = solver.computeEV(distribution);
+			Text text = new Text("EV = " + String.format("%+.4f", ev * 100) + "%\n");
+			if (ev > 0) {
+				text.setStyle("-fx-fill: rgba(96, 255, 96, 1);");
+				Text fstar = new Text("f* = " +  String.format(" %.4f", Kelly.criterion(distribution) * 100) + "%\n");
+				fstar.setStyle("-fx-fill: rgba(96, 255, 96, 1);");
+				console.getChildren().addAll(text, fstar, new Text("\n"));
+			} else {
+				text.setStyle("-fx-fill: rgba(255, 192, 0, 1);");
+				console.getChildren().addAll(text, new Text("\n"));
+			}
 			root.setCursor(Cursor.DEFAULT);
 			isComputing.set(false);
 		});
