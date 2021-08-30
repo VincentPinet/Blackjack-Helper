@@ -3,13 +3,12 @@ package com.github.vincentpinet.blackjack_helper;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
+
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import javafx.geometry.Insets;
-
 import java.lang.Thread;
 import javafx.concurrent.Task;
 
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Cursor;
 import javafx.scene.layout.StackPane;
@@ -111,7 +110,6 @@ public class Controller {
 		playerZone.setOnDragDropped(e -> handleDrop(e, playerZone, player));
 		playerSplittedZone.setOnDragDropped(e -> handleDrop(e, playerSplittedZone, playerSplitted));
 		dealerZone.setOnDragDropped(e -> handleDrop(e, dealerZone, dealer));
-
 	}
 
 
@@ -294,5 +292,6 @@ public class Controller {
 		dealerZone.getChildren().clear();
 		console.getChildren().clear();
 		console.getChildren().add(new Text(">_\n"));
+		solver.clearCache();
 	}
 }

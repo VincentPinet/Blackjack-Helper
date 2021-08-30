@@ -12,12 +12,12 @@ public class ObservableCards extends Cards implements ObservableValue<Cards> {
 
 		public ObservableCards() {
 			super();
-			this.listeners = new ArrayList();
+			this.listeners = new ArrayList<>();
 		}
 
 		public ObservableCards(Cards o) {
 			super(o);
-			this.listeners = new ArrayList();
+			this.listeners = new ArrayList<>();
 		}
 
 		@Override

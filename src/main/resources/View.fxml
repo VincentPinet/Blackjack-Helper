@@ -16,7 +16,7 @@
 <?import javafx.scene.text.TextFlow?>
 <?import java.util.ArrayList?>
 
-<AnchorPane fx:id="root" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1280.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.vincentpinet.blackjack_helper.Controller">
+<AnchorPane fx:id="root" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1280.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.vincentpinet.blackjack_helper.Controller">
 	<children>
 		<Ellipse layoutX="511.0" layoutY="-51.0" radiusX="663.0" radiusY="602.0" styleClass="circle" />
 		<HBox spacing="4.0" styleClass="deck" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
