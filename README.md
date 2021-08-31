@@ -15,7 +15,7 @@ java -jar target/Blackjack-Helper-1.0.jar
 
 #### Download executable from [release](https://github.com/VincentPinet/Blackjack-Helper/releases)
 
-[direct link](https://github.com/VincentPinet/Blackjack-Helper/releases/v1.0/download/Blackjack-Helper-1.0.jar)
+[direct link](https://github.com/VincentPinet/Blackjack-Helper/releases/download/v1.0/Blackjack-Helper-1.0.jar)
 
 ## Demo
 
