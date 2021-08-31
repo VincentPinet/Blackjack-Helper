@@ -5,10 +5,10 @@
 
 	<groupId>com.github.vincentpinet.blackjack_helper</groupId>
 	<artifactId>Blackjack-Helper</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0</version>
 
 	<name>Blackjack-Helper</name>
-	<description></description>
+	<description>Decision support tool for Blackjack</description>
 	<url>https://github.com/VincentPinet/Blackjack-Helper</url>
 
 	<properties>

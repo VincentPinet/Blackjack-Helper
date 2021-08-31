@@ -10,7 +10,7 @@ Decision support tool that answer: ***How much to bet?*** and ***Which action to
 
 ```shell
 mvn clean package
-java -jar target/Blackjack-Helper-1.0-SNAPSHOT.jar
+java -jar target/Blackjack-Helper-1.0.jar
 ```
 
 #### Download executable from [release](https://github.com/VincentPinet/Blackjack-Helper/releases)
