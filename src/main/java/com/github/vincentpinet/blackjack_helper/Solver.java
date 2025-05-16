@@ -268,6 +268,8 @@ public class Solver {
 			weight /= 1.0 * deck.contains(i) / deck.size();
 		}
 
+		System.out.println(res);
+
 		return res;
 	}
 
