@@ -56,12 +56,12 @@ public class ObservableCards extends Cards implements ObservableValue<Cards> {
 		}
 
 		@Override
-		public void addListener​(ChangeListener<? super Cards> listener) {
+		public void addListener(ChangeListener<? super Cards> listener) {
 			listeners.add(listener);
 		}
 
 		@Override
-		public void removeListener​(ChangeListener<? super Cards> listener) {
+		public void removeListener(ChangeListener<? super Cards> listener) {
 			listeners.remove(listener);
 		}
 
@@ -75,6 +75,6 @@ public class ObservableCards extends Cards implements ObservableValue<Cards> {
 				listener.changed(this, oldValue, newValue);
 		}
 
-		@Override public void addListener​(InvalidationListener listener) {}
-		@Override public void removeListener​(InvalidationListener listener) {}
+		@Override public void addListener(InvalidationListener listener) {}
+		@Override public void removeListener(InvalidationListener listener) {}
 }
